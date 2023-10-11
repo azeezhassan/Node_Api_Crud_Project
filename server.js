@@ -1,8 +1,11 @@
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const Product = require('./models/productModels')
 const app = express()
 
+const PORT = process.env.PORT || 3000
+const MONGO_URL = process.env.MONGO_URL
 //json middleware for app to understand json
 app.use(express.json())
 
@@ -82,12 +85,13 @@ app.delete('/products/:id',async(req,res) => {
 })
 
 //Mongoose Db Connection before app listening
-mongoose.connect('mongodb://localhost:27017/NodeApis')
+mongoose
+.connect(MONGO_URL)
 .then(() => {
     console.log('Connected to MongoDb')
     // listen port
-    app.listen(3000,()=>{
-        console.log('Node API App is running on port 3000')
+    app.listen(PORT,()=>{
+        console.log(`Node API App is running on port ${PORT}`)
     })
     
 }).catch((error) =>{
